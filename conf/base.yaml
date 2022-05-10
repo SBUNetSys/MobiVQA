@@ -1,0 +1,44 @@
+defaults:
+  - override hydra/job_logging: colorlog
+  - override hydra/hydra_logging: colorlog
+
+log_name: ""
+hydra:
+  run:
+    dir: data/hydra-logs/${log_name}-${now:%Y-%m-%d_%H-%M-%S}
+
+lxmert:
+  feature_dim: 2048
+  l_layer: 9
+  v_layer: 5
+  x_layer: 5
+  hidden_size: 768
+
+x_layers: 5
+num_qa_labels: 3129 # 9592 for vg, 3129 for vqa, 2109 for vizwiz
+data_dir: ${oc.env:PWD}/data
+model_cfg: ${oc.env:PWD}/configs/R-50-grid.yaml
+model_weights: ${data_dir}/models/R-50.pth
+tokenizer: "unc-nlp/lxmert-base-uncased"
+init_name: lxmert-base-vqa
+model_config: ${data_dir}/pretrain/${init_name}.json
+model_states: ${data_dir}/pretrain/${init_name}.bin
+load_states: # ${data_dir}/pretrain/${states}.bin
+
+question_max_length: 20
+img_max_features: 608
+top_k_ratio: 1.1 # use < 0 or > 1 to disable
+
+early_exit:
+  ffn_size: 384
+  ffn_act: relu  # relu, silu, mish, swish, gelu_fast
+  ffn2_size: 0
+  use_concat: 0
+  droput_prob: 0.1
+
+cross_exit:
+  ffn_size: 256
+  ffn_act: relu  # relu, silu, mish, swish
+  ffn2_size: 0
+  droput_prob: 0.1
+

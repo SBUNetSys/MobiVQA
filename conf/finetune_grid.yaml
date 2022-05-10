@@ -1,0 +1,61 @@
+defaults:
+  - base
+  - _self_
+pop_ans_head: 0
+use_x_layers: 5
+reuse_heads: 1
+single_ans_head: 0
+#finetune_heads_only: 1
+#finetune_heads_only_except_last: 1
+
+#model: "unc-nlp/lxmert-vqa-uncased"
+
+num_gpus: 2 # use export CUDA_VISIBLE_DEVICES to select idx
+log_every_n_steps: 10
+overfit_batches: 0
+hparams:
+  gradient_clip_val: 0.5
+  train_batch_size: 32
+  max_epochs: 5
+  learning_rate: 5e-5
+  warmup_ratio: 0.1
+  weight_decay: 0.0
+  accumulate_grad_batches: 1
+  precision: 16
+  amp_level: O2
+  stochastic_weight_avg: true
+ckpt: ckpt
+weights_save_path: ${data_dir}/${ckpt}
+save_weights_only: true
+resume_from_checkpoint:
+save_step_frequency: 2000
+save_step_max_keep: 5
+
+val_batch_size: 32
+test_batch_size: 32
+data_num_works: 8
+
+dataset_name: vqa2
+train_split: ${dataset_name}-train
+val_split: ${dataset_name}-val
+test_split: ${dataset_name}-test
+vqa_data_dir: ${data_dir}/${dataset_name}
+train_file: ${vqa_data_dir}/${train_split}.jsonl
+val_file: ${vqa_data_dir}/${val_split}.jsonl
+test_file: ${vqa_data_dir}/${test_split}.jsonl
+
+
+ans2label_file: ${vqa_data_dir}/${dataset_name}_ans2label.json
+label2ans_file: ${vqa_data_dir}/${dataset_name}_label2ans.json
+load_vg_head:
+vg_ans2label: ${data_dir}/vg/vg_ans2label.json
+# vqa2_label2ans: ${data_dir}/vg/${dataset_name}_label2ans.json
+
+img_feat_dir: ${data_dir}/image-features
+img_feat_name: vg
+img_folder: ${data_dir}/val2014-small # test2015-images, val2014-images
+profile: no
+out_file: ${data_dir}/vqa_test_${test_split}.json
+local_eval: 0
+print_model_info: 0
+save_feature: 

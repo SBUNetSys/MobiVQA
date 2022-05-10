@@ -1,0 +1,15 @@
+defaults:
+  - base
+  - _self_
+
+vqa_model_weights:
+use_x_layers:
+question_max_length: 20
+img_max_features: 608
+
+label2answer_file: ${data_dir}/vqa/vqa2_label2ans.json
+vqa_data_file: ${data_dir}/vqa/vqa2-1k-val.jsonl
+img_folder: ${data_dir}/val-1k-img # test2015-images, val2014-images
+profile_num:
+out_file: ${data_dir}/vqa_1k-val_eval.json
+print_pred:

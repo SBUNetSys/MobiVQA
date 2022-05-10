@@ -1,0 +1,9 @@
+defaults:
+  - base
+  - _self_
+
+dataset_name: vizwiz
+split: val
+vqa_data_file: ${data_dir}/${dataset_name}/${dataset_name}-${split}.jsonl
+img_folder: ${data_dir}/images/${dataset_name}-${split}
+feature_folder: ${data_dir}/image-features/${dataset_name}-${split}
